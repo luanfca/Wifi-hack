@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <string.h>
 #include <pthread.h>
+#include <stdint.h>
 #include <android/log.h>
 
 #define LOG(msg)  __android_log_write(ANDROID_LOG_INFO,"wpsbrute",msg)
@@ -27,10 +28,16 @@ void* worker(void* arg){
     return NULL;
 }
 
-JNIEXPORT void JNICALL Java_com_wifihack_NativeLib_runWps(JNIEnv* env,jclass clazz){
+JNIEXPORT jboolean JNICALL Java_com_wifihack_NativeLib_runWps(
+    JNIEnv* env,
+    jclass clazz,
+    jstring bssid
+){
     pthread_t t[4];
+    stop = 0;
     for(int i=0;i<4;i++)
         pthread_create(&t[i],NULL,worker,(void*)(i*2500));
     for(int i=0;i<4;i++)
         pthread_join(t[i],NULL);
+    return stop ? JNI_TRUE : JNI_FALSE;
 }
