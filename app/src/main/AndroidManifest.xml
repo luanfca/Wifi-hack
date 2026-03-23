@@ -12,6 +12,7 @@
     <application
         android:allowBackup="false"
         android:label="WifiHack"
+        android:theme="@style/Theme.WifiHack"
         android:supportsRtl="true">
         <service android:name=".ScannerService"
             android:exported="false"
